@@ -29,4 +29,12 @@ jobs:
       env:
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       run: python analyze_results.py
-      working-directory: ./  # <- Dossier où se trouve analyze_results.py
+      working-directory: ./  # Dossier où se trouve analyze_results.py
+
+    - name: Upload analysis artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: analysis-results
+        path: |
+          average_grades_chart.png
+          grade_distribution_chart.png
