@@ -78,7 +78,7 @@ plt.title('Répartition des notes par tranche')
 plt.xlabel('Tranche de notes')
 plt.ylabel('Nombre d\'étudiants')
 
-# On peut aussi sauvegarder ce graphique si besoin, par exemple :
+
 plt.savefig("grade_distribution_chart.png")
 print("Graphique de répartition des notes sauvegardé.")
 
