@@ -1,0 +1,30 @@
+[0m18:23:53.397916 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000265BF8990F0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000265C1856800>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000265C1856A10>]}
+
+
+============================== 18:23:53.434153 | b3e528d4-03ba-4fe7-b796-18f9e4a368a6 ==============================
+[0m18:23:53.434153 [info ] [MainThread]: Running with dbt=1.10.2
+[0m18:23:53.437415 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': 'C:\\Users\\ayman\\.dbt', 'debug': 'False', 'version_check': 'True', 'log_path': 'logs', 'fail_fast': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'introspect': 'True', 'static_parser': 'True', 'invocation_command': 'dbt init fakeschool_dbt', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m18:23:53.997582 [info ] [MainThread]: Creating dbt configuration folder at C:\Users\ayman\.dbt
+[0m18:23:54.026175 [debug] [MainThread]: Starter project path: C:\Users\ayman\desktop\FakeSchoolData\venv\lib\site-packages\dbt\include\starter_project
+[0m18:23:54.205764 [info ] [MainThread]: 
+Your new dbt project "fakeschool_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m18:23:54.207953 [info ] [MainThread]: Setting up your profile.
+[0m18:26:00.641984 [info ] [MainThread]: Profile fakeschool_dbt written to C:\Users\ayman\.dbt\profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m18:26:00.648751 [debug] [MainThread]: Command `dbt init` succeeded at 18:26:00.647252 after 127.59 seconds
+[0m18:26:00.650847 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000265BF8990F0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000265C1862DA0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000265C1856AD0>]}
+[0m18:26:00.652879 [debug] [MainThread]: Flushing usage events
+[0m18:26:01.113122 [debug] [MainThread]: An error was encountered while trying to flush usage events

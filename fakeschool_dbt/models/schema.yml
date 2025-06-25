@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: raw
+    database: FakeSchool
+    schema: RAW
+    tables:
+      - name: Results
+
+models:
+  - name: average_grades
+    description: "Moyenne des notes par étudiant"
+    columns:
+      - name: id_student
+        description: "Identifiant de l'étudiant"
+      - name: average_grade
+        description: "Note moyenne"
+
+  - name: top_students
+    description: "Top 3 des étudiants selon la note moyenne"
+    columns:
+      - name: id_student
+        description: "Identifiant de l'étudiant"
+      - name: average_grade
+        description: "Note moyenne"
