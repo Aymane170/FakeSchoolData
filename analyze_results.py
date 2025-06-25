@@ -2,8 +2,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import snowflake.connector
 import os
+from datetime import datetime
+
+print("Début de l'exécution du script analyze_results.py")
 
 # Connexion à Snowflake 
+print("Connexion à Snowflake...")
 conn = snowflake.connector.connect(
     user='AYMANE17',
     password=os.getenv('SNOWFLAKE_PASSWORD'),
@@ -12,6 +16,7 @@ conn = snowflake.connector.connect(
     database='FakeSchool',
     schema='RAW'
 )
+print("Connexion réussie.")
 
 # Chargement des données dans DataFrame
 query = """
@@ -30,10 +35,9 @@ JOIN
 """
 
 df = pd.read_sql(query, conn)
+print("Données chargées, colonnes : ", df.columns.tolist())
 
-print(df.columns)  
-
-# Moyenne, médiane et écart-type des notes par cours
+# Statistiques
 stats_by_course = df.groupby('ID_COURSES')['GRADE'].agg(['mean', 'median', 'std']).reset_index()
 print("Stats par cours :\n", stats_by_course)
 
@@ -43,7 +47,11 @@ plt.hist(df['GRADE'], bins=10, color='skyblue', edgecolor='black')
 plt.title('Distribution des notes')
 plt.xlabel('Note')
 plt.ylabel('Nombre d\'étudiants')
-plt.show()
+
+# Sauvegarde du graphique
+output_file = "average_grades_chart.png"
+plt.savefig(output_file)
+print(f"Graphique enregistré dans {output_file}")
 
 # Nombre d’étudiants par cours
 students_per_course = df.groupby('ID_COURSES')['ID_STUDENT'].nunique().reset_index(name='nb_students')
@@ -69,6 +77,10 @@ grade_distribution.plot(kind='bar', color='orange')
 plt.title('Répartition des notes par tranche')
 plt.xlabel('Tranche de notes')
 plt.ylabel('Nombre d\'étudiants')
-plt.show()
+
+# On peut aussi sauvegarder ce graphique si besoin, par exemple :
+plt.savefig("grade_distribution_chart.png")
+print("Graphique de répartition des notes sauvegardé.")
 
 conn.close()
+print("Connexion fermée. Script terminé avec succès.")
