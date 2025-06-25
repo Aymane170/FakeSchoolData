@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import snowflake.connector
 import os
 
-# Connexion à Snowflake (à adapter avec tes infos)
+# Connexion à Snowflake 
 conn = snowflake.connector.connect(
     user='AYMANE17',
     password=os.getenv('SNOWFLAKE_PASSWORD'),
