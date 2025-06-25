@@ -3,9 +3,9 @@ name: Run Snowflake Analysis
 on:
   push:
     branches:
-      - main  # ou ta branche principale
+      - main
   schedule:
-    - cron: '0 8 * * *'  # Exécution tous les jours à 8h UTC (optionnel)
+    - cron: '0 8 * * *'
 
 jobs:
   analyze:
@@ -29,3 +29,4 @@ jobs:
       env:
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       run: python analyze_results.py
+      working-directory: ./  # <- Dossier où se trouve analyze_results.py
