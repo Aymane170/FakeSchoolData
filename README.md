@@ -5,7 +5,7 @@
 
 A fully automated data pipeline that simulates school data, loads it into Snowflake, transforms it using dbt (Silver & Gold models), and generates visual insights with Python — all scheduled daily via GitHub Actions.
 
-
+---
 
 ## 🎯 **Project Overview**
 
@@ -13,7 +13,7 @@ FakeSchoolData is a personal data engineering project designed to simulate, tran
 
 This project demonstrates the use of a modern data stack in a complete end-to-end scenario.
 
-
+---
 
 ## 🧰 **Tech Stack**
 
@@ -25,7 +25,7 @@ This project demonstrates the use of a modern data stack in a complete end-to-en
 - **Visualization & Automation**: Python + matplotlib  
 - **Version Control**: Git
 
-
+---
 
 ## 📁 **Repository Structure**
 
@@ -59,6 +59,8 @@ This project demonstrates the use of a modern data stack in a complete end-to-en
 
 
 
+---
+
 ## 🔁 **Workflow Summary**
 
 ### 1. **Data Generation – `generate_data.py`**
@@ -73,7 +75,7 @@ This script uses Faker, Numpy, and Pandas to create realistic datasets:
 CSV files saved to `fakeschool_dbt/seeds/`  
 (`students.csv`, `courses.csv`, `results.csv`)
 
-
+---
 
 ### 2. **Load into Snowflake**
 
@@ -82,7 +84,7 @@ CSV files saved to `fakeschool_dbt/seeds/`
 - Creates RAW tables (staging layer)  
 - Prepares for dbt transformation
 
-
+---
 
 ### 3. **Data Transformation with dbt**
 
@@ -103,7 +105,7 @@ The `fakeschool_dbt` project is structured into two layers:
 - `top_student_per_course.sql`: Top student per course  
 - `course_with_highest_failure_rate.sql`: Courses with the highest failure rates
 
-
+---
 
 ### 4. **Visualization – `generate_gold_graphs.py`**
 
@@ -116,7 +118,7 @@ This script queries the Gold models from Snowflake and generates charts using pa
 
 **Charts are saved to the `charts/` directory.**
 
-
+---
 
 ### 5. **Automation – GitHub Actions**
 
@@ -133,7 +135,7 @@ This script queries the Gold models from Snowflake and generates charts using pa
 4. Generate updated charts  
 5. Store charts in `charts/` or as GitHub Artifacts
 
-
+---
 
 ## 📊 **Sample Charts**
 
@@ -144,7 +146,7 @@ Charts are refreshed daily and may include:
 - Courses with highest failure rates  
 - Average scores by student
 
-
+---
 
 ## 👨‍💻 **Author**
 
