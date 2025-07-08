@@ -9,4 +9,4 @@ SELECT
 FROM raw.fact_results r
 JOIN raw.dim_courses c ON r.course_id = c.id_course_hash
 GROUP BY c.nom, c.annee_enseignement
-ORDER BY average_grade DESC
+ORDER BY average_grade DES  C

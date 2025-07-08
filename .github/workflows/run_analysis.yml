@@ -1,4 +1,4 @@
-name: Run Snowflake Analysis
+name: Analyze Gold & Generate Charts
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     - cron: '0 8 * * *'
 
 jobs:
-  analyze:
+  generate-charts:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,19 +22,24 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
+        pip install --upgrade pip
         pip install pandas matplotlib snowflake-connector-python
 
-    - name: Run analysis script
+    - name: Run gold queries & generate charts
       env:
+        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      run: python analyze_results.py
-      working-directory: ./  # Dossier où se trouve analyze_results.py
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+        SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+        SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+      run: python generate_gold_graphs.py
 
-    - name: Upload analysis artifacts
+    - name: Zip charts
+      run: zip -r gold_charts.zip charts/
+
+    - name: Upload charts as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: analysis-results
-        path: |
-          average_grades_chart.png
-          grade_distribution_chart.png
+        name: gold-charts
+        path: gold_charts.zip
