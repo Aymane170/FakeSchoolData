@@ -28,7 +28,7 @@ select
   nom_professeur,
   prenom_professeur,
 
-  -- Création d'une clé de hachage unique pour chaque cours
+  -- Création d'une clé de hachage unique pour chaque courses
   md5(concat(nom, cast(annee_enseignement as varchar))) as id_course_hash
 
 from raw_data
