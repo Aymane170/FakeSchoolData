@@ -1,4 +1,4 @@
-![CI](https://github.com/Aymen170/FakeSchoolData/actions/workflows/run_analysis.yml/badge.svg)
+![CI](https://github.com/Aymane170/FakeSchoolData/actions/workflows/run_analysis.yml/badge.svg)
 
 
 
