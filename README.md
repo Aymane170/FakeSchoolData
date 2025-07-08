@@ -1,3 +1,7 @@
+![CI](https://github.com/Aymen17/FakeSchoolData/actions/workflows/run_analysis.yml/badge.svg)
+
+
+
 # **FakeSchoolData**
 A fully automated data pipeline that simulates school data, loads it into a Snowflake data warehouse, transforms it with dbt, and analyzes it with Python—generating visual insights and storing them in GitHub Actions Artifacts.
 
