@@ -1,0 +1,83 @@
+version: 2
+
+sources:
+  - name: raw
+    database: FakeSchool
+    schema: RAW
+    tables:
+      - name: students
+      - name: courses
+      - name: results
+
+models:
+  - name: dim_students
+    description: "Dimension des étudiants nettoyée"
+    columns:
+      - name: id
+        description: "ID technique source"
+      - name: firstname
+      - name: lastname
+      - name: date_naissance
+      - name: matricule
+        tests:
+          - not_null
+          - unique
+      - name: id_student_hash
+        description: "Clé de hachage unique de l'étudiant"
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_courses
+    description: "Dimension des cours nettoyée"
+    columns:
+      - name: id
+        description: "ID technique source du cours"
+      - name: nom
+        description: "Nom du cours"
+        tests:
+          - not_null
+      - name: annee_enseignement
+        description: "Année d'enseignement du cours"
+        tests:
+          - not_null
+      - name: nom_professeur
+        description: "Nom de famille du professeur"
+        tests:
+          - not_null
+      - name: prenom_professeur
+        description: "Prénom du professeur"
+        tests:
+          - not_null
+      - name: id_course_hash
+        description: "Clé de hachage unique du cours (nom + année)"
+        tests:
+          - not_null
+          - unique
+
+  - name: results_cleaned
+    description: "Résultats avec identifiants hashés et année"
+    columns:
+      - name: student_id
+        tests:
+          - not_null
+      - name: course_id
+        tests:
+          - not_null
+      - name: annee
+        tests:
+          - not_null
+      - name: grade
+        tests:
+          - not_null
+
+  - name: fact_results
+    description: "Table de faits des résultats scolaires"
+    columns:
+      - name: student_id
+        tests:
+          - not_null
+      - name: course_id
+        tests:
+          - not_null
+      - name: grade
