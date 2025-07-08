@@ -46,7 +46,10 @@ jobs:
         " > ~/.dbt/profiles.yml
 
     - name: Compile dbt models
-      run: dbt compile --profiles-dir ~/.dbt
+      run: |
+        cd fakeschool_dbt 
+        dbt compile --profiles-dir ~/.dbt
+
 
     - name: Run gold queries & generate charts
       env:
