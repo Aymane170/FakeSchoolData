@@ -1,238 +1,152 @@
 ![CI](https://github.com/Aymane170/FakeSchoolData/actions/workflows/run_analysis.yml/badge.svg)
 
 
-
 # **FakeSchoolData**
-A fully automated data pipeline that simulates school data, loads it into a Snowflake data warehouse, transforms it with dbt, and analyzes it with Python—generating visual insights and storing them in GitHub Actions Artifacts.
 
-## Project Overview
-FakeSchoolData is a personal data engineering project designed to simulate and analyze academic data for a fictional school. It covers the entire data lifecycle, from generation to analysis, while showcasing modern data stack tools and automation.
+A fully automated data pipeline that simulates school data, loads it into Snowflake, transforms it using dbt (Silver & Gold models), and generates visual insights with Python — all scheduled daily via GitHub Actions.
 
-## Tech Stack
-    Languages: Python 3.10, SQL
 
-    Libraries: pandas, matplotlib, faker, snowflake-connector-python
 
-    Data Warehouse: Snowflake
+## 🎯 **Project Overview**
 
-    Transformation Tool: dbt (Data Build Tool)
+FakeSchoolData is a personal data engineering project designed to simulate, transform, and analyze fictional academic data. It covers the entire data lifecycle: data generation, ingestion, transformation, visualization, and automation.
 
-    CI/CD: GitHub Actions
+This project demonstrates the use of a modern data stack in a complete end-to-end scenario.
 
-    Version Control: Git
 
-# Repository Structure
 
-    FakeSchoolData/
-    ├── .github/
-    │   └── workflows/
-    │       └── run_analysis.yml           # GitHub Actions CI/CD pipeline
-    ├── analyze_results.py                 # Analysis and visualization script
-    ├── average_grades_chart.png          # Generated chart (uploaded as artifact)
-    ├── courses.csv                       # Simulated course data
-    ├── generate_data.py                  # Script for data generation
-    ├── log/                              # Log files
-    ├── results.csv                       # Simulated grade data
-    ├── students.csv                      # Simulated student data
-    ├── venv/                             # Virtual environment (not versioned)
-    ├── .gitignore
-    ├── fakeschool_dbt/                   # dbt transformation project
-    │   └── models/
-    │       ├── average_grades.py         # Model for average grades per course
-    │       ├── top_students.py           # Model for top students
-    │       └── schema.yml                # Model documentation and tests
-# Workflow Summary
-## 1. Data Generation (generate_data.py)
-    Generates:
+## 🧰 **Tech Stack**
 
-    100 students (ID, first name, last name)
+- **Languages**: Python 3.10, SQL  
+- **Python Libraries**: `pandas`, `numpy`, `matplotlib`, `faker`, `snowflake-connector-python`  
+- **Data Warehouse**: Snowflake  
+- **Transformation Tool**: dbt (Data Build Tool)  
+- **CI/CD**: GitHub Actions  
+- **Visualization & Automation**: Python + matplotlib  
+- **Version Control**: Git
 
-    10 courses (ID, name)
 
-    Random results (grades between 0 and 20) per student per course
 
-    Output:
-    students.csv, courses.csv, results.csv
+## 📁 **Repository Structure**
 
-## 2. Load to Snowflake
-    Connects to Snowflake using snowflake-connector-python
 
-    Creates RAW schema with tables: STUDENTS, COURSES, RESULTS
+        FakeSchoolData/
+        ├── .github/
+        │   └── workflows/
+        │       └── run_analysis.yml          # GitHub Actions CI/CD workflow (automated analysis)
+        ├── generate_data.py                  # Script to generate fake school data
+        ├── generate_gold_graphs.py           # Script to generate charts from Gold dbt models
+        ├── charts/                          # Folder for auto-generated PNG charts
+        ├── fakeschool_dbt/                  # dbt project for data transformations
+        │   ├── dbt_project.yml              # dbt project configuration file
+        │   ├── seeds/                      
+        │   │   ├── students.csv             # Seed data: students
+        │   │   ├── courses.csv              # Seed data: courses
+        │   │   └── results.csv              # Seed data: student results
+        │   └── models/
+        │       ├── silver/                  # Silver layer models (cleaned/raw data)
+        │       │   ├── dim_courses.sql      # Dimension table for courses
+        │       │   ├── dim_students.sql     # Dimension table for students
+        │       │   ├── fact_results.sql     # Fact table for results/grades
+        │       │   ├── results_cleaned.sql  # Cleaned results data
+        │       │   └── schema.yml           # Documentation & tests for silver models
+        │       └── gold/                    # Gold layer models (aggregated & analytic)
+        │           ├── avg_grade_per_course.sql               # Average grades by course
+        │           ├── avg_grade_per_students.sql             # Average grades by student
+        │           ├── top_student_per_course.sql             # Top student per course
+        │           └── course_with_highest_failure_rate.sql  # Courses with highest failure rates
+        ├── .gitignore                      # Git ignore rules
 
-    Uses internal staging and COPY INTO to bulk load data
 
-## 3. Transform Data with dbt
-    Initializes dbt project: fakeschool_dbt
 
-    Models:
+## 🔁 **Workflow Summary**
 
-    average_grades.py: Calculates average grade per course
+### 1. **Data Generation – `generate_data.py`**
 
-    top_students.py: Extracts top 5 students by GPA
+This script uses Faker, Numpy, and Pandas to create realistic datasets:
 
-    Uses schema.yml for model validation
+- **Students**: 100 (ID, first name, last name)  
+- **Courses**: 10 (ID, name)  
+- **Results**: Random grades (0 to 20) for each student-course pair
 
-    Run with dbt run
+**Output**:  
+CSV files saved to `fakeschool_dbt/seeds/`  
+(`students.csv`, `courses.csv`, `results.csv`)
 
-## 4. Analyze Results (analyze_results.py)
-    Connects to Snowflake and queries transformed tables
 
-    Computes:
 
-    Average, median, standard deviation of grades per course
+### 2. **Load into Snowflake**
 
-    Min/max grades per student
+- Connects to Snowflake using `snowflake-connector-python`  
+- Loads CSV data via `dbt seed`  
+- Creates RAW tables (staging layer)  
+- Prepares for dbt transformation
 
-    Top 5 students by average
 
-### Visualizations:
 
-    Grade distribution histogram
+### 3. **Data Transformation with dbt**
 
-    Grade intervals (0–5, 6–10, etc.) as bar chart
+The `fakeschool_dbt` project is structured into two layers:
 
-    Outputs: average_grades_chart.png
+#### 🧪 **Silver (Cleaning & Structuring)**
 
-## 5.  Automation via GitHub Actions
-    * Workflow: .github/workflows/run_analysis.yml
+- `dim_students.sql`: Student dimension table  
+- `dim_courses.sql`: Course dimension table  
+- `fact_results.sql`: Results fact table  
+- `results_cleaned.sql`: Initial data cleanup  
+- `schema.yml`: Model documentation and automated tests
 
-    * Triggers:
+#### 📊 **Gold (Business-Ready Analytics)**
 
-        - On push to main
+- `avg_grade_per_course.sql`: Average grade by course  
+- `avg_grade_per_students.sql`: Average grade by student  
+- `top_student_per_course.sql`: Top student per course  
+- `course_with_highest_failure_rate.sql`: Courses with the highest failure rates
 
-        - Daily at 8:00 UTC (via cron)
 
-    * Steps:
 
-        - Clone repo
+### 4. **Visualization – `generate_gold_graphs.py`**
 
-        - Set up Python & dependencies
+This script queries the Gold models from Snowflake and generates charts using pandas and matplotlib:
 
-        - Securely inject Snowflake credentials via GitHub Secrets
+- Grade distributions (histograms)  
+- Averages per course/student  
+- Failure rates  
+- Top performers
 
-        - Run the analysis script
+**Charts are saved to the `charts/` directory.**
 
-        - Upload generated files (e.g., PNG) as GitHub Artifacts
 
 
-# 👨‍💻 Author
-***Aymane RAMI***
+### 5. **Automation – GitHub Actions**
 
-**Data & Software Engineering Enthusiast**
-# **FakeSchoolData**
-A fully automated data pipeline that simulates school data, loads it into a Snowflake data warehouse, transforms it with dbt, and analyzes it with Python—generating visual insights and storing them in GitHub Actions Artifacts.
+- **Workflow file**: `.github/workflows/run_analysis.yml`  
+- **Triggers**:
+  - On every push to `main`
+  - Daily at `08:00 UTC` via cron
 
-## Project Overview
-FakeSchoolData is a personal data engineering project designed to simulate and analyze academic data for a fictional school. It covers the entire data lifecycle, from generation to analysis, while showcasing modern data stack tools and automation.
+**Steps executed automatically:**
 
-## Tech Stack
-    Languages: Python 3.10, SQL
+1. Install Python and dependencies  
+2. Inject Snowflake credentials via GitHub Secrets  
+3. Run `generate_gold_graphs.py`  
+4. Generate updated charts  
+5. Store charts in `charts/` or as GitHub Artifacts
 
-    Libraries: pandas, matplotlib, faker, snowflake-connector-python
 
-    Data Warehouse: Snowflake
 
-    Transformation Tool: dbt (Data Build Tool)
+## 📊 **Sample Charts**
 
-    CI/CD: GitHub Actions
+Charts are refreshed daily and may include:
 
-    Version Control: Git
+- Grade distribution per course  
+- Top students by average  
+- Courses with highest failure rates  
+- Average scores by student
 
-# Repository Structure
 
-    FakeSchoolData/
-    ├── .github/
-    │   └── workflows/
-    │       └── run_analysis.yml           # GitHub Actions CI/CD pipeline
-    ├── analyze_results.py                 # Analysis and visualization script
-    ├── average_grades_chart.png          # Generated chart (uploaded as artifact)
-    ├── courses.csv                       # Simulated course data
-    ├── generate_data.py                  # Script for data generation
-    ├── log/                              # Log files
-    ├── results.csv                       # Simulated grade data
-    ├── students.csv                      # Simulated student data
-    ├── venv/                             # Virtual environment (not versioned)
-    ├── .gitignore
-    ├── fakeschool_dbt/                   # dbt transformation project
-    │   └── models/
-    │       ├── average_grades.py         # Model for average grades per course
-    │       ├── top_students.py           # Model for top students
-    │       └── schema.yml                # Model documentation and tests
-# Workflow Summary
-## 1. Data Generation (generate_data.py)
-    Generates:
 
-    100 students (ID, first name, last name)
+## 👨‍💻 **Author**
 
-    10 courses (ID, name)
-
-    Random results (grades between 0 and 20) per student per course
-
-    Output:
-    students.csv, courses.csv, results.csv
-
-## 2. Load to Snowflake
-    Connects to Snowflake using snowflake-connector-python
-
-    Creates RAW schema with tables: STUDENTS, COURSES, RESULTS
-
-    Uses internal staging and COPY INTO to bulk load data
-
-## 3. Transform Data with dbt
-    Initializes dbt project: fakeschool_dbt
-
-    Models:
-
-    average_grades.py: Calculates average grade per course
-
-    top_students.py: Extracts top 5 students by GPA
-
-    Uses schema.yml for model validation
-
-    Run with dbt run
-
-## 4. Analyze Results (analyze_results.py)
-    Connects to Snowflake and queries transformed tables
-
-    Computes:
-
-    Average, median, standard deviation of grades per course
-
-    Min/max grades per student
-
-    Top 5 students by average
-
-### Visualizations:
-
-    Grade distribution histogram
-
-    Grade intervals (0–5, 6–10, etc.) as bar chart
-
-    Outputs: average_grades_chart.png
-
-## 5.  Automation via GitHub Actions
-    * Workflow: .github/workflows/run_analysis.yml
-
-    * Triggers:
-
-        - On push to main
-
-        - Daily at 8:00 UTC (via cron)
-
-    * Steps:
-
-        - Clone repo
-
-        - Set up Python & dependencies
-
-        - Securely inject Snowflake credentials via GitHub Secrets
-
-        - Run the analysis script
-
-        - Upload generated files (e.g., PNG) as GitHub Artifacts
-
-
-# 👨‍💻 Author
-***Aymane RAMI***
-
-**Data & Software Engineering Enthusiast**
+**Aymane RAMI**  
+*Data & Software Engineering Enthusiast*
