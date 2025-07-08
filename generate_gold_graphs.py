@@ -26,12 +26,17 @@ sql_files = {
 os.makedirs("charts", exist_ok=True)
 
 for name, path in sql_files.items():
+    if not os.path.isfile(path):
+        print(f"❌ Le fichier {path} n'existe pas. Passage à la suite.")
+        continue
     print(f"📄 Exécution de {path}")
     with open(path, "r") as f:
         query = f.read()
-        cursor.execute(query)
-        df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
-
+    print("Requête SQL exécutée :")
+    print(query[:200] + "..." if len(query) > 200 else query)  # affiche les 200 premiers caractères
+    cursor.execute(query)
+    df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
+    
     if df.empty:
         print(f"⚠️ Résultat vide pour {name}")
         continue
