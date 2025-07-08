@@ -17,10 +17,10 @@ conn = snowflake.connector.connect(
 cursor = conn.cursor()
 
 sql_files = {
-    "avg_grade_by_courses": "fakeschool_dbt/models/gold/avg_grade_by_course.sql",
-    "avg_grade_by_students": "fakeschool_dbt/models/gold/avg_grade_by_student.sql",
+    "avg_grade_by_course": "fakeschool_dbt/models/gold/avg_grade_by_course.sql",
+    "avg_grade_by_student": "fakeschool_dbt/models/gold/avg_grade_by_student.sql",
     "courses_with_highest_failure_rate": "fakeschool_dbt/models/gold/courses_with_highest_failure_rate.sql",
-    "top_students_per_courses": "fakeschool_dbt/models/gold/top_students_per_course.sql"
+    "top_students_per_course": "fakeschool_dbt/models/gold/top_students_per_course.sql"
 }
 
 os.makedirs("charts", exist_ok=True)
