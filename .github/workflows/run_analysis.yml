@@ -25,9 +25,28 @@ jobs:
         pip install --upgrade pip
         pip install pandas matplotlib snowflake-connector-python dbt-core dbt-snowflake
 
-    - name: Compile dbt models
+    - name: Setup dbt profiles
       run: |
-        dbt compile
+        mkdir -p ~/.dbt
+        echo "
+        fakeschool_dbt:
+          target: dev
+          outputs:
+            dev:
+              type: snowflake
+              account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+              user: ${{ secrets.SNOWFLAKE_USER }}
+              password: ${{ secrets.SNOWFLAKE_PASSWORD }}
+              role: ACCOUNTADMIN
+              database: ${{ secrets.SNOWFLAKE_DATABASE }}
+              warehouse: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+              schema: ${{ secrets.SNOWFLAKE_SCHEMA }}
+              threads: 1
+              client_session_keep_alive: False
+        " > ~/.dbt/profiles.yml
+
+    - name: Compile dbt models
+      run: dbt compile --profiles-dir ~/.dbt
 
     - name: Run gold queries & generate charts
       env:
