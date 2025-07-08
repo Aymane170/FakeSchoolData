@@ -23,7 +23,11 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install pandas matplotlib snowflake-connector-python
+        pip install pandas matplotlib snowflake-connector-python dbt-core dbt-snowflake
+
+    - name: Compile dbt models
+      run: |
+        dbt compile
 
     - name: Run gold queries & generate charts
       env:
