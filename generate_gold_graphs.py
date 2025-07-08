@@ -6,21 +6,21 @@ import snowflake.connector
 print("🔗 Connexion à Snowflake...")
 
 conn = snowflake.connector.connect(
-    user=os.environ['SNOWFLAKE_USER'],
-    password=os.environ['SNOWFLAKE_PASSWORD'],
-    account=os.environ['SNOWFLAKE_ACCOUNT'],
-    warehouse=os.environ['SNOWFLAKE_WAREHOUSE'],
-    database=os.environ['SNOWFLAKE_DATABASE'],
-    schema=os.environ['SNOWFLAKE_SCHEMA']
+    user='AYMANE17',
+    password=os.getenv('SNOWFLAKE_PASSWORD'),
+    account='LKJZRTO-NM04387',
+    warehouse='COMPUTE_WH',
+    database='FakeSchool',
+    schema='RAW'
 )
 
 cursor = conn.cursor()
 
 sql_files = {
-    "avg_grade_by_courses": "gold/avg_grade_by_courses.sql",
-    "avg_grade_by_students": "gold/avg_grade_by_students.sql",
-    "courses_with_highest_failure_rate": "gold/courses_with_highest_failure_rate.sql",
-    "top_students_per_courses": "gold/top_students_per_courses.sql"
+    "avg_grade_by_courses": "fakeschool_dbt/models/gold/avg_grade_by_courses.sql",
+    "avg_grade_by_students": "fakeschool_dbt/models/gold/avg_grade_by_students.sql",
+    "courses_with_highest_failure_rate": "fakeschool_dbt/models/gold/courses_with_highest_failure_rate.sql",
+    "top_students_per_courses": "fakeschool_dbt/models/gold/top_students_per_courses.sql"
 }
 
 os.makedirs("charts", exist_ok=True)
