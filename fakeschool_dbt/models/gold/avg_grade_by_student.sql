@@ -3,10 +3,8 @@
 ) }}
 
 SELECT
-  s.firstname,
-  s.lastname,
+  r.student_id,
   ROUND(AVG(r.grade), 2) AS average_grade
-FROM raw.fact_results r
-JOIN raw.dim_students s ON r.student_id = s.id_student_hash
-GROUP BY s.firstname, s.lastname
+FROM {{ ref('fact_results') }} r
+GROUP BY r.student_id
 ORDER BY average_grade DESC
