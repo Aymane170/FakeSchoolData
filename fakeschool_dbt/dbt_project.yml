@@ -11,7 +11,7 @@ seeds:
 
 models:
   fakeschool_dbt:
-   silver:
+    silver:
       +materialized: incremental  
-  gold:
+    gold:
       +materialized: view
