@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 8 * * *'  # Tous les jours à 8h
 
 jobs:
   generate-charts:
@@ -23,7 +23,11 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install pandas matplotlib snowflake-connector-python dbt-core dbt-snowflake
+        pip install pandas matplotlib snowflake-connector-python dbt-core dbt-snowflake faker
+
+    - name: Generate CSV files
+      run: |
+        python generate_data.py
 
     - name: Setup dbt profiles
       run: |
@@ -45,12 +49,11 @@ jobs:
               client_session_keep_alive: False
         " > ~/.dbt/profiles.yml
 
-    - name: Compile dbt models
+    - name: Compile and run dbt models
       run: |
-        cd fakeschool_dbt 
+        cd fakeschool_dbt
         dbt compile --profiles-dir ~/.dbt
         dbt run --profiles-dir ~/.dbt
-
 
     - name: Run gold queries & generate charts
       env:

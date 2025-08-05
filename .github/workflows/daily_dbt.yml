@@ -1,0 +1,43 @@
+name: Daily DBT Workflow
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Tous les jours à 8h UTC 
+  workflow_dispatch:  # Permet aussi d'exécuter manuellement
+
+jobs:
+  generate-and-run-dbt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          pip install pandas faker numpy
+
+      - name: Install dbt
+        run: pip install dbt-core dbt-snowflake
+
+      - name: Generate CSV files
+        run: python generate_data.py
+
+      - name: Run dbt commands
+        working-directory: ./fakeschool_dbt
+        env:
+          DBT_USER: ${{ secrets.SNOWFLAKE_USER }}
+          DBT_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          DBT_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DBT_ROLE: ACCOUNTADMIN
+          DBT_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          DBT_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+          DBT_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+        run: |
+          dbt seed
+          dbt run
