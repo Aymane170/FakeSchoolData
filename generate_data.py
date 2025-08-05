@@ -55,7 +55,7 @@ df_courses.to_csv('fakeschool_dbt/seeds/courses.csv', index=False, encoding='utf
 Génération des données des étudiants
 Cette section crée 50 étudiants avec :
 - ID unique
-- Prénom et nom
+- Prénom et Nom
 - Date de naissance (entre 18 et 22 ans)
 - Date de dernière mise à jour des informations
 Les données sont réalistes grâce à Faker et respectent une distribution d'âge cohérente
