@@ -55,22 +55,6 @@ models:
           - not_null
           - unique
 
-  - name: results_cleaned
-    description: "Résultats avec identifiants hashés et année"
-    columns:
-      - name: student_id
-        tests:
-          - not_null
-      - name: course_id
-        tests:
-          - not_null
-      - name: annee
-        tests:
-          - not_null
-      - name: grade
-        tests:
-          - not_null
-
   - name: fact_results
     description: "Table de faits des résultats scolaires"
     columns:
