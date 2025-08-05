@@ -1,9 +1,3 @@
--- models/silver/results_cleaned.sql
-/*
-  Modèle results_cleaned : Résultats enrichis avec identifiants hashés
-  Jointures avec dim_students et dim_courses pour récupérer les clés uniques
-*/
-
 {{ config(
     materialized='incremental',
     unique_key='student_id || course_id'
@@ -36,4 +30,4 @@ select
     r.grade
 from results r
 left join students s on r.id_student = s.student_id
-left join courses c on r.id_courses = c.course_id
+left join courses c on r.id_course = c.course_id  -- attention ici : id_course au singulier si c’est le nom exact
