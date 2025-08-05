@@ -49,6 +49,7 @@ jobs:
       run: |
         cd fakeschool_dbt 
         dbt compile --profiles-dir ~/.dbt
+        dbt run --profiles-dir ~/.dbt
 
 
     - name: Run gold queries & generate charts

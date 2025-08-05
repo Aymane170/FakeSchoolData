@@ -1,7 +1,7 @@
--- models/gold/fact_results.sql
+-- models/silver/results_cleaned.sql
 /*
-  Table de faits finale des résultats :
-  Combine les résultats, les étudiants et les cours
+  Modèle results_cleaned : Résultats enrichis avec identifiants hashés
+  Jointures avec dim_students et dim_courses pour récupérer les clés uniques
 */
 
 {{ config(
@@ -11,43 +11,29 @@
 
 with results as (
     select *
-    from {{ ref('results_cleaned') }}
+    from {{ source('raw', 'results') }}
 ),
 
 students as (
     select
-        id_student_hash,
-        firstname,
-        lastname,
-        date_naissance,
-        matricule
+        id as student_id,
+        id_student_hash
     from {{ ref('dim_students') }}
 ),
 
 courses as (
     select
+        id as course_id,
         id_course_hash,
-        nom as nom_cours,
-        annee_enseignement,
-        nom_professeur,
-        prenom_professeur
+        annee_enseignement
     from {{ ref('dim_courses') }}
 )
 
 select
-    r.student_id,
-    s.firstname,
-    s.lastname,
-    s.date_naissance,
-    s.matricule,
-
-    r.course_id,
-    c.nom_cours,
-    c.annee_enseignement,
-    c.nom_professeur,
-    c.prenom_professeur,
-
+    s.id_student_hash as student_id,
+    c.id_course_hash as course_id,
+    c.annee_enseignement as annee,
     r.grade
 from results r
-left join students s on r.student_id = s.id_student_hash
-left join courses c on r.course_id = c.id_course_hash
+left join students s on r.id_student = s.student_id
+left join courses c on r.id_courses = c.course_id
