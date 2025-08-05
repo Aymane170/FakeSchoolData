@@ -1,16 +1,13 @@
--- models/silver/results_cleaned.sql
-/*
-  Modèle results_cleaned : Résultats enrichis avec identifiants hashés
-  Jointures avec dim_students et dim_courses pour récupérer les clés uniques
-*/
-
 {{ config(
     materialized='incremental',
     unique_key='student_id || course_id'
 ) }}
 
 with results as (
-    select *
+    select
+        id_student,
+        id_courses,
+        grade
     from {{ source('raw', 'results') }}
 ),
 
