@@ -33,4 +33,5 @@ select
     r.grade
 from results r
 left join students s on r.id_student = s.student_id
-left join courses c on r.id_courses = c.course_id
+left join courses c on r.id_courses = c.course_id 
+
