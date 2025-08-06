@@ -19,7 +19,7 @@ select
   annee_enseignement,
   nom_professeur,
   prenom_professeur,  
-  md5(concat(nom, cast(annee_enseignement as varchar))) as id_course
+  md5(concat(nom, cast(annee_enseignement as varchar))) as id_course_hash
 
 from raw_data
 

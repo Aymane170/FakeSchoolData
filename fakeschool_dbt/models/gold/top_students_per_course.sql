@@ -4,19 +4,19 @@
 
 WITH ranked_grades AS (
     SELECT
-        fr.student_id,
-        fr.course_id,
+        fr.student_id_hash,
+        fr.course_id_hash,
         fr.grade,
-        RANK() OVER (PARTITION BY fr.course_id ORDER BY fr.grade DESC) as grade_rank
-    FROM {{ ref('fact_results') }} as fr
+        RANK() OVER (PARTITION BY fr.course_id_hash ORDER BY fr.grade DESC) AS grade_rank
+    FROM {{ ref('fact_results') }} AS fr
 )
 
 SELECT
-    rg.student_id,
-    rg.course_id,
-    c.nom as course_name,
+    rg.student_id_hash,
+    rg.course_id_hash,
+    c.nom AS course_name,
     rg.grade
-FROM ranked_grades as rg
-JOIN {{ ref('dim_courses') }} as c
-    ON rg.course_id = c.id_course
+FROM ranked_grades AS rg
+JOIN {{ ref('dim_courses') }} AS c
+    ON rg.course_id_hash = c.id_course_hash
 WHERE rg.grade_rank = 1

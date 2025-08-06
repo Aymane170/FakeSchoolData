@@ -16,24 +16,26 @@ with results as (
 
 students as (
     select
-        id as student_id,
-        id_student
+        id as id_source_student,
+        id_student_hash
     from {{ ref('dim_students') }}
 ),
 
 courses as (
     select
-        id as course_id,
-        id_course,
+        id as id_source_course,
+        id_course_hash,
         annee_enseignement
     from {{ ref('dim_courses') }}
+
 )
 
 select
-    s.id_student as student_id,
-    c.id_course as course_id,
+    s.id_student_hash as student_id_hash,
+    c.id_course_hash as course_id_hash,
     c.annee_enseignement as annee,
     r.grade
 from results r
-left join students s on r.id_student = s.student_id
-left join courses c on r.id_courses = c.course_id
+left join students s on r.id_student = s.id_source_student
+left join courses c on r.id_courses = c.id_source_course
+

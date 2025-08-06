@@ -19,6 +19,6 @@ select
     lastname,
     date_naissance,
     md5(concat(firstname, lastname, date_naissance)) as matricule,
-    md5(cast(id as string)) as id_student,
+    md5(cast(id as string)) as id_student_hash,
     updated_at
 from raw_data
