@@ -1,35 +1,39 @@
+-- models/silver/results_cleaned.sql
+/*
+  Modèle results_cleaned : Résultats enrichis avec identifiants hashés
+  Jointures avec dim_students et dim_courses pour récupérer les clés uniques
+*/
+
 {{ config(
     materialized='incremental',
-    unique_key='student_id_hash || course_id_hash'
+    unique_key='student_id || course_id'
 ) }}
 
 with results as (
-    select
-        id_student,
-        id_courses,
-        grade
+    select *
     from {{ source('raw', 'results') }}
 ),
 
 students as (
     select
-        id
+        id as student_id,
+        id_student_hash
     from {{ ref('dim_students') }}
 ),
 
 courses as (
     select
-        id,
-        nom,
+        id as course_id,
+        id_course_hash,
         annee_enseignement
     from {{ ref('dim_courses') }}
 )
 
 select
-    md5(cast(r.id_student as string)) as student_id_hash,
-    md5(concat(c.nom, cast(c.annee_enseignement as varchar))) as course_id_hash,
+    s.id_student_hash as student_id,
+    c.id_course_hash as course_id,
     c.annee_enseignement as annee,
     r.grade
 from results r
-left join students s on r.id_student = s.id
-left join courses c on r.id_courses = c.id
+left join students s on r.id_student = s.student_id
+left join courses c on r.id_courses = c.course_id
