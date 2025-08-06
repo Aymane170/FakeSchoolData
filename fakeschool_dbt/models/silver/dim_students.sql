@@ -1,7 +1,8 @@
- {{ config(
+{{ config(
     materialized='incremental',
-    unique_key='id_student'
+    unique_key='id_student_hash'
 ) }}
+
 with latest as (
     select max(updated_at) as max_updated_at from {{ source('raw', 'students') }}
 ),

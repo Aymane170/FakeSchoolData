@@ -6,7 +6,7 @@
 
 {{ config(
     materialized='incremental',
-    unique_key='student_id || course_id'
+    unique_key='student_id_hash || course_id_hash'
 ) }}
 
 with results as (
@@ -27,7 +27,6 @@ courses as (
         id_course_hash,
         annee_enseignement
     from {{ ref('dim_courses') }}
-
 )
 
 select
@@ -38,4 +37,3 @@ select
 from results r
 left join students s on r.id_student = s.id_source_student
 left join courses c on r.id_courses = c.id_source_course
-

@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key='id_course'
+    unique_key='id_course_hash'
 ) }}
 
 with raw_data as (
