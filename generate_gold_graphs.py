@@ -1,30 +1,10 @@
-"""
-Script de génération de graphiques à partir des modèles dbt Gold
-Ce script:
-1. Se connecte à Snowflake pour récupérer les données analysées
-2. Exécute les requêtes SQL compilées par dbt
-3. Génère des visualisations pour chaque analyse
-4. Sauvegarde les graphiques au format PNG
-
-Les graphiques générés incluent:
-- Moyennes par cours et par année
-- Top 10 des étudiants
-- Taux d'échec par cours
-- Meilleurs étudiants par cours
-"""
-
-import os  # Pour la gestion des fichiers et dossiers
-import pandas as pd  # Pour la manipulation des données
-import matplotlib.pyplot as plt  # Pour la création des graphiques
-import snowflake.connector  # Pour la connexion à la base de données Snowflake
+import os
+import pandas as pd
+import matplotlib.pyplot as plt
+import snowflake.connector
 
 print("🔗 Connexion à Snowflake...")
 
-"""
-Configuration de la connexion à Snowflake
-Les credentials sont récupérés depuis les variables d'environnement
-pour des raisons de sécurité et de portabilité
-"""
 conn = snowflake.connector.connect(
     user=os.getenv('SNOWFLAKE_USER'),
     password=os.getenv('SNOWFLAKE_PASSWORD'),
@@ -36,10 +16,6 @@ conn = snowflake.connector.connect(
 
 cursor = conn.cursor()
 
-"""
-Définition des chemins vers les fichiers SQL compilés par dbt
-Ces fichiers contiennent les requêtes optimisées pour chaque analyse
-"""
 sql_files = {
     "avg_grade_by_courses": "fakeschool_dbt/target/compiled/fakeschool_dbt/models/gold/avg_grade_by_course.sql",
     "avg_grade_by_students": "fakeschool_dbt/target/compiled/fakeschool_dbt/models/gold/avg_grade_by_student.sql",
@@ -49,17 +25,7 @@ sql_files = {
 
 os.makedirs("charts", exist_ok=True)
 
-"""
-Boucle principale de génération des graphiques
-Pour chaque fichier SQL:
-1. Vérifie l'existence du fichier
-2. Lit et exécute la requête
-3. Convertit les résultats en DataFrame
-4. Génère le graphique approprié
-5. Sauvegarde le graphique en PNG
-"""
 for name, path in sql_files.items():
-    # Vérification de l'existence du fichier SQL
     if not os.path.isfile(path):
         print(f"❌ Le fichier {path} n'existe pas. Passage à la suite.")
         continue
@@ -78,23 +44,13 @@ for name, path in sql_files.items():
         print(f"⚠️ Résultat vide pour {name}")
         continue
 
-    """
-    Logique de génération des graphiques
-    Chaque type d'analyse a son propre format de visualisation adapté :
-    - avg_grade_by_courses : Graphique en barres groupées par année
-    - avg_grade_by_students : Top 10 des moyennes étudiants
-    - courses_with_highest_failure_rate : Taux d'échec par cours
-    - top_students_per_courses : Meilleur étudiant par cours
-    """
+    print(f"Colonnes récupérées pour {name}: {df.columns.tolist()}")
+
     plt.figure(figsize=(10, 6))
 
     if name == "avg_grade_by_courses":
-        """
-        Graphique des moyennes par cours et par année
-        - Conversion de l'année en string pour le groupement
-        - Création d'un tableau croisé pour les barres groupées
-        - Affichage des moyennes par cours, groupées par année
-        """
+        # ATTENTION noms des colonnes selon ta requête SQL, à ajuster si nécessaire
+        # Ici j'ai mis tout en minuscules, adapte si besoin
         df["ANNEE_ENSEIGNEMENT"] = df["ANNEE_ENSEIGNEMENT"].astype(str)
         pivot_df = df.pivot(index="ANNEE_ENSEIGNEMENT", columns="COURSE_NAME", values="AVERAGE_GRADE")
         pivot_df.plot(kind="bar")
@@ -102,42 +58,36 @@ for name, path in sql_files.items():
         plt.ylabel("Average Grade")
 
     elif name == "avg_grade_by_students":
-        """
-        Graphique des 10 meilleurs étudiants
-        - Tri des moyennes par ordre décroissant
-        - Sélection des 10 premiers
-        - Graphique en barres avec couleur personnalisée
-        """
+        # Correction des noms de colonnes (casse sensible)
+        # Ex: student_id_hash et average_grade (ajuste selon ce que tu as dans df.columns)
+        # Je te propose un print des colonnes au dessus pour vérifier
+        # Donc on remplace STUDENT_ID par la colonne correcte, ici student_id_hash
         df_top = df.sort_values(by="AVERAGE_GRADE", ascending=False).head(10)
-        df_top.plot(kind="bar", x="STUDENT_ID", y="AVERAGE_GRADE", legend=False, color="teal")
+        # Utiliser les noms réels, ici en minuscules (modifie si différent)
+        df_top.plot(kind="bar", x="STUDENT_ID_HASH" if "STUDENT_ID_HASH" in df_top.columns else "student_id_hash", 
+                    y="AVERAGE_GRADE" if "AVERAGE_GRADE" in df_top.columns else "average_grade",
+                    legend=False, color="teal")
         plt.title("Top 10 Students by Average Grade")
         plt.ylabel("Average Grade")
 
     elif name == "courses_with_highest_failure_rate":
-        """
-        Graphique des cours avec le plus haut taux d'échec
-        - Conversion du taux d'échec en nombre
-        - Tri par taux d'échec décroissant
-        - Graphique en barres rouge pour signaler les échecs
-        """
-        df["FAILURE_RATE"] = pd.to_numeric(df["FAILURE_RATE"], errors="coerce")  # force en float
-        df_sorted = df.sort_values(by="FAILURE_RATE", ascending=False).head(10)
-        df_sorted.plot(kind="bar", x="COURSE_NAME", y="FAILURE_RATE", legend=False, color="tomato")
-
-        print(df.dtypes)
-        print(df.head())
+        # Conversion taux d'échec, nom de colonnes à vérifier aussi
+        failure_col = "FAILURE_RATE" if "FAILURE_RATE" in df.columns else "failure_rate"
+        course_col = "COURSE_NAME" if "COURSE_NAME" in df.columns else "course_name"
+        df[failure_col] = pd.to_numeric(df[failure_col], errors="coerce")
+        df_sorted = df.sort_values(by=failure_col, ascending=False).head(10)
+        df_sorted.plot(kind="bar", x=course_col, y=failure_col, legend=False, color="tomato")
         plt.title("Top 10 Courses with Highest Failure Rate")
         plt.ylabel("Failure Rate (%)")
 
     elif name == "top_students_per_courses":
-        """
-        Graphique des meilleurs étudiants par cours
-        - Création d'une étiquette combinant cours et ID étudiant
-        - Un graphique en barres dorées pour les "meilleurs"
-        - Affichage de la note du meilleur étudiant pour chaque cours
-        """
-        df["LABEL"] = df["COURSE_NAME"] + " (" + df["STUDENT_ID"].astype(str) + ")"
-        df.plot(kind="bar", x="LABEL", y="GRADE", legend=False, color="goldenrod")
+        # Colonnes à vérifier : COURSE_NAME, STUDENT_ID, GRADE
+        course_col = "COURSE_NAME" if "COURSE_NAME" in df.columns else "course_name"
+        student_col = "STUDENT_ID" if "STUDENT_ID" in df.columns else "student_id"
+        grade_col = "GRADE" if "GRADE" in df.columns else "grade"
+
+        df["LABEL"] = df[course_col] + " (" + df[student_col].astype(str) + ")"
+        df.plot(kind="bar", x="LABEL", y=grade_col, legend=False, color="goldenrod")
         plt.title("Top Student per Course")
         plt.ylabel("Grade")
 
