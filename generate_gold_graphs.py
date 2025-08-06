@@ -81,15 +81,30 @@ for name, path in sql_files.items():
         plt.ylabel("Failure Rate (%)")
 
     elif name == "top_students_per_courses":
-        # Colonnes à vérifier : COURSE_NAME, STUDENT_ID, GRADE
-        course_col = "COURSE_NAME" if "COURSE_NAME" in df.columns else "course_name"
-        student_col = "STUDENT_ID" if "STUDENT_ID" in df.columns else "student_id"
-        grade_col = "GRADE" if "GRADE" in df.columns else "grade"
+        # Vérifier les noms exacts des colonnes renvoyées
+        # Exemple: ['STUDENT_ID_HASH', 'COURSE_ID_HASH', 'COURSE_NAME', 'GRADE']
+        course_col = None
+        student_col = None
+        grade_col = None
+
+        # Trouver la colonne de cours
+        for col in df.columns:
+            if col.lower() == "course_name":
+                course_col = col
+            elif col.lower() in ("student_id", "student_id_hash"):
+                student_col = col
+            elif col.lower() == "grade":
+                grade_col = col
+
+        if course_col is None or student_col is None or grade_col is None:
+            print(f"❌ Colonnes nécessaires manquantes dans {name}: course_col={course_col}, student_col={student_col}, grade_col={grade_col}")
+            continue
 
         df["LABEL"] = df[course_col] + " (" + df[student_col].astype(str) + ")"
         df.plot(kind="bar", x="LABEL", y=grade_col, legend=False, color="goldenrod")
         plt.title("Top Student per Course")
         plt.ylabel("Grade")
+
 
     plt.tight_layout()
     output_path = f"charts/{name}.png"
