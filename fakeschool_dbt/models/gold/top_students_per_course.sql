@@ -2,21 +2,21 @@
     materialized='view'
 ) }}
 
-with ranked_grades as (
-    select
-        fr.student_id,
-        fr.course_id,
+WITH ranked_grades AS (
+    SELECT
+        fr.student_id_hash,
+        fr.course_id_hash,
         fr.grade,
-        rank() over (partition by fr.course_id order by fr.grade desc) as grade_rank
-    from {{ ref('fact_results') }} as fr
+        RANK() OVER (PARTITION BY fr.course_id_hash ORDER BY fr.grade DESC) as grade_rank
+    FROM {{ ref('fact_results') }} as fr
 )
 
-select
-    rg.student_id,
-    rg.course_id,
+SELECT
+    rg.student_id_hash,
+    rg.course_id_hash,
     c.nom as course_name,
     rg.grade
-from ranked_grades as rg
-join {{ ref('dim_courses') }} as c
-    on rg.course_id = c.id_course_hash
-where rg.grade_rank = 1
+FROM ranked_grades as rg
+JOIN {{ ref('dim_courses') }} as c
+    ON rg.course_id_hash = c.id_course_hash
+WHERE rg.grade_rank = 1

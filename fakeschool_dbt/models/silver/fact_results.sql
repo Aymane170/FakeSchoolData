@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key='student_id || course_id'
+    unique_key='student_id_hash || course_id_hash'
 ) }}
 
 with results as (
@@ -27,11 +27,10 @@ courses as (
 )
 
 select
-    s.id_student_hash as student_id,
-    c.id_course_hash as course_id,
+    s.id_student_hash as student_id_hash,
+    c.id_course_hash as course_id_hash,
     c.annee_enseignement as annee,
     r.grade
 from results r
 left join students s on r.id_student = s.student_id
-left join courses c on r.id_courses = c.course_id 
-
+left join courses c on r.id_courses = c.course_id
