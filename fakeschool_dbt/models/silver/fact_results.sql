@@ -1,8 +1,4 @@
 -- models/silver/fact_results.sql
-/*
-  Modèle fact_results : Résultats enrichis avec identifiants hashés
-  Jointures avec dim_students et dim_courses pour récupérer les clés uniques
-*/
 
 {{ config(
     materialized='incremental',
@@ -10,7 +6,10 @@
 ) }}
 
 with results as (
-    select *
+    select
+        id_student,
+        id_courses,
+        grade
     from {{ source('raw', 'results') }}
 ),
 
