@@ -1,6 +1,6 @@
--- models/silver/results_cleaned.sql
+-- models/silver/fact_results.sql
 /*
-  Modèle results_cleaned : Résultats enrichis avec identifiants hashés
+  Modèle fact_results : Résultats enrichis avec identifiants hashés
   Jointures avec dim_students et dim_courses pour récupérer les clés uniques
 */
 
@@ -17,21 +17,21 @@ with results as (
 students as (
     select
         id as student_id,
-        id_student_hash
+        id_student
     from {{ ref('dim_students') }}
 ),
 
 courses as (
     select
         id as course_id,
-        id_course_hash,
+        id_course,
         annee_enseignement
     from {{ ref('dim_courses') }}
 )
 
 select
-    s.id_student_hash as student_id,
-    c.id_course_hash as course_id,
+    s.id_student as student_id,
+    c.id_course as course_id,
     c.annee_enseignement as annee,
     r.grade
 from results r

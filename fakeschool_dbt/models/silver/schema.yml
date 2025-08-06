@@ -58,10 +58,10 @@ models:
   - name: fact_results
     description: "Table de faits des résultats scolaires"
     columns:
-        - name: student_id_hash
+        - name: student_id
           tests:
             - not_null
-        - name: course_id_hash
+        - name: course_id
           tests:
             - not_null
         - name: annee
