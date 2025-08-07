@@ -9,6 +9,7 @@ Les données sont générées de manière aléatoire mais cohérente grâce à l
 de seeds fixes pour la reproductibilité des résultats.
 """
 
+from datetime import datetime
 import numpy as np  # Pour les calculs numériques et la génération de notes
 import pandas as pd  # Pour la manipulation et l'export des données
 from faker import Faker  # Pour la génération de données réalistes (noms, dates, etc.)
@@ -19,11 +20,25 @@ import os  # Pour la gestion des dossiers
 
 """
 Configuration initiale du générateur de données
-- Initialisation du Faker en français pour des données localisées
 - Définition des seeds pour la reproductibilité
 - Création du dossier de sortie
 """
-fake = Faker('fr_FR')  # Initialisation du générateur de données en français
+
+# Générer une seed aléatoire chaque jour (ex: 20250807)
+
+seed = int(datetime.now().timestamp())  # nombre de secondes depuis 1970
+print(f"Seed utilisée : {seed}")
+
+
+
+# Initialisation de tous les générateurs avec la même seed
+np.random.seed(seed)
+random.seed(seed)
+fake = Faker('fr_FR')
+Faker.seed(seed)  # <- ❗ ESSENTIEL pour que Faker produise des résultats différents
+
+# Création du dossier
+
 os.makedirs('seeds', exist_ok=True)  # Création du dossier de sortie si non existant
 
 """
