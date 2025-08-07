@@ -6,6 +6,7 @@ on:
       - main
   schedule:
     - cron: '0 8 * * *'  # Tous les jours à 8h
+  workflow_dispatch:
 
 jobs:
   generate-charts:
@@ -79,3 +80,4 @@ jobs:
       with:
         name: gold-charts
         path: gold_charts.zip
+        
