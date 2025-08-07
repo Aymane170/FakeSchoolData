@@ -24,8 +24,6 @@ Configuration initiale du générateur de données
 - Création du dossier de sortie
 """
 fake = Faker('fr_FR')  # Initialisation du générateur de données en français
-np.random.seed(42)     # Seed pour numpy - assure la reproductibilité des notes
-random.seed(42)        # Seed pour les choix aléatoires
 os.makedirs('seeds', exist_ok=True)  # Création du dossier de sortie si non existant
 
 """
