@@ -49,6 +49,11 @@ jobs:
               client_session_keep_alive: False
         " > ~/.dbt/profiles.yml
 
+    - name: Seed DBT data
+      run: |
+        cd fakeschool_dbt
+        dbt seed --full-refresh --profiles-dir ~/.dbt
+
     - name: Compile and run dbt models
       run: |
         cd fakeschool_dbt
