@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 8 * * *'  # Tous les jours à 8h
+    - cron: '0 13 * * *'  # Tous les jours à 13h
   workflow_dispatch:
 
 jobs:
