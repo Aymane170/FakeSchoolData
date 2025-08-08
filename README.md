@@ -41,13 +41,14 @@
 
 ```mermaid
 graph TD
-    A[Fake Data Generation (Python)] --> B[CSV Seeds]
+    A[Fake Data Generation - Python] --> B[CSV Seeds]
     B --> C[Snowflake (RAW)]
     C --> D[DBT Silver Models]
     D --> E[DBT Gold Models]
-    E --> F[Python Analytics & Charts]
-    F --> G[Artifacts (Charts)]
-    G --> H[GitHub Actions (CI/CD)]
+    E --> F[Python Analytics and Charts]
+    F --> G[Artifacts - Charts]
+    G --> H[GitHub Actions - CI/CD]
+    H --> I[GitHub Actions - Daily Refresh]
 ```
 
 1. **Data Generation:** Python script creates and appends new fake data to CSVs.
