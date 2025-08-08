@@ -197,6 +197,18 @@ FakeSchoolData/
     pip install pandas numpy matplotlib faker snowflake-connector-python dbt-core dbt-snowflake
     ```
 
+  **Note :
+  If you encounter issues running dbt or installing dependencies, try using a Python virtual environment:
+    ```sh
+    python -m venv venv       # On Windows
+    venv\Scripts\activate  
+    ```     
+    or
+
+    ```sh
+    source venv/bin/activate  # On macOS/Linux
+    ```
+
 3. **Configure Snowflake credentials:**
     - Set environment variables or edit `~/.dbt/profiles.yml` as in the workflow.
 
