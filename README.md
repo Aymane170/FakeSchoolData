@@ -194,8 +194,6 @@ FakeSchoolData/
 
 2. **Install dependencies:**
     ```sh
-    pip install -r requirements.txt
-    # Or manually:
     pip install pandas numpy matplotlib faker snowflake-connector-python dbt-core dbt-snowflake
     ```
 
