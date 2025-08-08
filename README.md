@@ -24,7 +24,7 @@
 
 ---
 
-## 1. Project Overview
+### 1. Project Overview
 
 **FakeSchoolData** is a fully automated, end-to-end data engineering project that simulates academic data, loads it into Snowflake, transforms it using dbt, and generates visual insights with Python. All steps are orchestrated and scheduled via GitHub Actions.
 
@@ -37,7 +37,7 @@
 
 ---
 
-## 2. Architecture & Data Flow
+### 2. Architecture & Data Flow
 
 ```mermaid
 graph TD
@@ -59,7 +59,7 @@ graph TD
 
 ---
 
-## 3. Tech Stack
+### 3. Tech Stack
 
 - **Languages:** Python 3.10, SQL
 - **Python Libraries:** `pandas`, `numpy`, `matplotlib`, `faker`, `snowflake-connector-python`
@@ -71,7 +71,7 @@ graph TD
 
 ---
 
-## 4. Repository Structure
+### 4. Repository Structure
 
 ```
 FakeSchoolData/
@@ -106,7 +106,7 @@ FakeSchoolData/
 
 ---
 
-## 5. Data Generation
+### 5. Data Generation
 
 - **Script:** `generate_data.py`
 - **Purpose:** Incrementally generates new students, courses, and results, appending to CSVs.
@@ -118,7 +118,7 @@ FakeSchoolData/
 
 ---
 
-## 6. Data Warehouse & Modeling
+### 6. Data Warehouse & Modeling
 
 ### Raw Layer
 
@@ -145,7 +145,7 @@ FakeSchoolData/
 
 ---
 
-## 7. Automation & CI/CD
+### 7. Automation & CI/CD
 
 - **Workflow:** `.github/workflows/run_analysis.yml`
 - **What it does:**
@@ -160,7 +160,7 @@ FakeSchoolData/
 
 ---
 
-## 8. Visualization & Reporting
+### 8. Visualization & Reporting
 
 - **Script:** `generate_gold_graphs.py`
 - **How it works:**
@@ -175,7 +175,7 @@ FakeSchoolData/
 
 ---
 
-## 9. How to Run Locally
+### 9. How to Run Locally
 
 ### Prerequisites
 
