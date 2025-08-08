@@ -6,21 +6,19 @@
 
 ## 📚 Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Architecture & Data Flow](#architecture--data-flow)
-3. [Tech Stack](#tech-stack)
-4. [Repository Structure](#repository-structure)
-5. [Data Generation](#data-generation)
-6. [Data Warehouse & Modeling](#data-warehouse--modeling)
+1. [Project Overview](#1-project-overview)
+2. [Architecture & Data Flow](#2-architecture--data-flow)
+3. [Tech Stack](#3-tech-stack)
+4. [Repository Structure](#4-repository-structure)
+5. [Data Generation](#5-data-generation)
+6. [Data Warehouse & Modeling](#6-data-warehouse--modeling)
     - [Raw Layer](#raw-layer)
     - [Silver Layer (DBT Models)](#silver-layer-dbt-models)
     - [Gold Layer (Analytics)](#gold-layer-analytics)
-7. [Automation & CI/CD](#automation--cicd)
-8. [Visualization & Reporting](#visualization--reporting)
-9. [How to Run Locally](#how-to-run-locally)
-10. [Extending the Project](#extending-the-project)
-11. [Troubleshooting](#troubleshooting)
-12. [License](#license)
+7. [Automation & CI/CD](#7-automation--cicd)
+8. [Visualization & Reporting](#8-visualization--reporting)
+9. [How to Run Locally](#9-how-to-run-locally)
+
 
 ---
 
