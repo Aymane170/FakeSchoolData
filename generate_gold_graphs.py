@@ -49,8 +49,7 @@ for name, path in sql_files.items():
     plt.figure(figsize=(10, 6))
 
     if name == "avg_grade_by_courses":
-        # ATTENTION noms des colonnes selon ta requête SQL, à ajuster si nécessaire
-        # Ici j'ai mis tout en minuscules, adapte si besoin
+
         df["ANNEE_ENSEIGNEMENT"] = df["ANNEE_ENSEIGNEMENT"].astype(str)
         pivot_df = df.pivot(index="ANNEE_ENSEIGNEMENT", columns="COURSE_NAME", values="AVERAGE_GRADE")
         pivot_df.plot(kind="bar")
@@ -58,12 +57,8 @@ for name, path in sql_files.items():
         plt.ylabel("Average Grade")
 
     elif name == "avg_grade_by_students":
-        # Correction des noms de colonnes (casse sensible)
-        # Ex: student_id_hash et average_grade (ajuste selon ce que tu as dans df.columns)
-        # Je te propose un print des colonnes au dessus pour vérifier
-        # Donc on remplace STUDENT_ID par la colonne correcte, ici student_id_hash
+
         df_top = df.sort_values(by="AVERAGE_GRADE", ascending=False).head(10)
-        # Utiliser les noms réels, ici en minuscules (modifie si différent)
         df_top.plot(kind="bar", x="STUDENT_ID_HASH" if "STUDENT_ID_HASH" in df_top.columns else "student_id_hash", 
                     y="AVERAGE_GRADE" if "AVERAGE_GRADE" in df_top.columns else "average_grade",
                     legend=False, color="teal")
@@ -71,7 +66,6 @@ for name, path in sql_files.items():
         plt.ylabel("Average Grade")
 
     elif name == "courses_with_highest_failure_rate":
-        # Conversion taux d'échec, nom de colonnes à vérifier aussi
         failure_col = "FAILURE_RATE" if "FAILURE_RATE" in df.columns else "failure_rate"
         course_col = "COURSE_NAME" if "COURSE_NAME" in df.columns else "course_name"
         df[failure_col] = pd.to_numeric(df[failure_col], errors="coerce")
@@ -81,8 +75,7 @@ for name, path in sql_files.items():
         plt.ylabel("Failure Rate (%)")
 
     elif name == "top_students_per_courses":
-        # Vérifier les noms exacts des colonnes renvoyées
-        # Exemple: ['STUDENT_ID_HASH', 'COURSE_ID_HASH', 'COURSE_NAME', 'GRADE']
+
         course_col = None
         student_col = None
         grade_col = None

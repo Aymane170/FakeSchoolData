@@ -16,7 +16,6 @@ STUDENTS_PATH = 'fakeschool_dbt/seeds/students.csv'
 RESULTS_PATH = 'fakeschool_dbt/seeds/results.csv'
 os.makedirs('fakeschool_dbt/seeds', exist_ok=True)
 
-# Seed unique par exécution (non fixe pour diversité)
 seed = int(datetime.now().timestamp())
 print(f"Seed utilisée : {seed}")
 np.random.seed(seed)
@@ -72,7 +71,7 @@ df_new_students = pd.DataFrame(new_students)
 df_courses = pd.concat([df_courses, df_new_courses], ignore_index=True)
 df_students = pd.concat([df_students, df_new_students], ignore_index=True)
 
-# Génération des résultats pour les NOUVEAUX étudiants dans TOUS les cours (anciens + nouveaux)
+# Génération des résultats pour les NOUVEAUX étudiants dans TOUS les cours 
 results = []
 for student_id in df_new_students['id']:
     for course_id in df_courses['id']:
