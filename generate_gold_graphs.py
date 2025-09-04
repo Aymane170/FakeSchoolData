@@ -114,4 +114,4 @@ for name, path in sql_files.items():
 
 cursor.close()
 conn.close()
-print("🎉 Tous les graphiques générés avec succès.")
+print("🎉 Tous les graphiques générés avec succès. ")
