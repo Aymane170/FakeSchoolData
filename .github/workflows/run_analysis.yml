@@ -55,7 +55,7 @@ jobs:
         cd fakeschool_dbt
         dbt seed --full-refresh --profiles-dir ~/.dbt
 
-    - name: Compile and run dbt models
+    - name: Compile and run dbt models 
       run: |
         cd fakeschool_dbt
         dbt clean
