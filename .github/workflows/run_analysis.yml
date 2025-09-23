@@ -48,7 +48,7 @@ jobs:
               schema: ${{ secrets.SNOWFLAKE_SCHEMA }}
               threads: 1
               client_session_keep_alive: False
-        " > ~/.dbt/profiles.yml
+        " > ~/.dbt/profiles.yml 
 
     - name: Seed DBT data
       run: |
