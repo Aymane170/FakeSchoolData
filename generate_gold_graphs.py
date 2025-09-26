@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import snowflake.connector
 
-print("🔗 Connexion à Snowflake...")
+print("Connexion à Snowflake...")
 
 conn = snowflake.connector.connect(
     user=os.getenv('SNOWFLAKE_USER'),
@@ -27,10 +27,10 @@ os.makedirs("charts", exist_ok=True)
 
 for name, path in sql_files.items():
     if not os.path.isfile(path):
-        print(f"❌ Le fichier {path} n'existe pas. Passage à la suite.")
+        print(f"Le fichier {path} n'existe pas. Passage à la suite.")
         continue
 
-    print(f"📄 Exécution de {path}")
+    print(f"Exécution de {path}")
     with open(path, "r") as f:
         query = f.read()
 
@@ -41,7 +41,7 @@ for name, path in sql_files.items():
     df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
 
     if df.empty:
-        print(f"⚠️ Résultat vide pour {name}")
+        print(f" Résultat vide pour {name}")
         continue
 
     print(f"Colonnes récupérées pour {name}: {df.columns.tolist()}")
@@ -90,7 +90,7 @@ for name, path in sql_files.items():
                 grade_col = col
 
         if course_col is None or student_col is None or grade_col is None:
-            print(f"❌ Colonnes nécessaires manquantes dans {name}: course_col={course_col}, student_col={student_col}, grade_col={grade_col}")
+            print(f"Colonnes nécessaires manquantes dans {name}: course_col={course_col}, student_col={student_col}, grade_col={grade_col}")
             continue
 
         df["LABEL"] = df[course_col] + " (" + df[student_col].astype(str) + ")"
@@ -102,9 +102,9 @@ for name, path in sql_files.items():
     plt.tight_layout()
     output_path = f"charts/{name}.png"
     plt.savefig(output_path)
-    print(f"✅ Graphique sauvegardé dans {output_path}")
+    print(f"Graphique sauvegardé dans {output_path}")
     plt.close()
 
 cursor.close()
 conn.close()
-print("🎉 Tous les graphiques générés avec succès. ")
+print("Tous les graphiques générés avec succès. ")
