@@ -94,3 +94,4 @@ print("✅ Données enrichies avec succès.")
 print(f"🎓 Total étudiants : {len(df_students)}")
 print(f"📚 Total cours : {len(df_courses)}")
 print(f"📝 Total résultats : {len(df_results)}")
+ 
