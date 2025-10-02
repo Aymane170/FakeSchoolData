@@ -4,8 +4,8 @@
 
 SELECT
   r.student_id_hash,
-  ROUND(AVG(r.grade), 2) AS average_grade,
-  s.student.name AS nom_etudiant,
+  ROUND(AVG(r.grade), 2) AS average_grade
+
 
 FROM {{ ref('fact_results') }} r
 
