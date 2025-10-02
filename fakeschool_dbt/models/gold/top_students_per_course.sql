@@ -19,4 +19,4 @@ SELECT
 FROM ranked_grades AS rg
 JOIN {{ ref('dim_courses') }} AS c
     ON rg.course_id_hash = c.id_course_hash
-WHERE rg.grade_rank = 1
+WHERE rg.grade_rank = 1 
